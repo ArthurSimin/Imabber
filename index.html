@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#1e1e2e">
+<title>Imabber — full-quality images from any link</title>
+<meta name="description" content="Paste a compressed thumbnail link — or just a Discord user ID — and get the highest-resolution original: Discord avatars & banners, CurseForge & Modrinth logos, YouTube thumbs and more. 100% in your browser.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2389b4fa'/%3E%3Cstop offset='1' stop-color='%2374c7ec'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='url(%23g)'/%3E%3Cpath d='M16 24V10m0 0l-5 5m5-5l5 5' stroke='%2311111b' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body id="top">
+
+<header class="top">
+  <div class="wrap bar">
+    <a class="brand" href="#top" aria-label="Imabber home">
+      <svg viewBox="0 0 32 32" width="28" height="28" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#89b4fa"/><stop offset="1" stop-color="#74c7ec"/></linearGradient></defs><rect width="32" height="32" rx="8" fill="url(#lg)"/><path d="M16 24V10m0 0l-5 5m5-5l5 5" stroke="#11111b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+      <span>Ima<em>bber</em></span>
+    </a>
+    <nav>
+      <a href="#supported">Supported sites</a>
+      <a href="#how">How it works</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="hero">
+    <h1>Paste a link.<br><span class="grad">Get the full-quality image.</span></h1>
+    <p class="sub">Imabber rewrites shrunken, compressed thumbnails &mdash; Discord avatars &amp; banners (just paste a user ID!), CurseForge &amp; Modrinth mod logos, YouTube thumbnails and more &mdash; back to their highest-resolution originals. Everything runs locally in your browser.</p>
+
+    <div class="panel">
+      <label class="sr-only" for="urls">Image URLs or Discord IDs</label>
+      <textarea id="urls" spellcheck="false" autocomplete="off" autocapitalize="off" autocorrect="off"
+        placeholder="Paste image URLs and/or Discord user IDs, one per line&#10;https://cdn.discordapp.com/avatars/…/….png?size=64&#10;https://media.forgecdn.net/avatars/thumbnails/…&#10;https://i.ytimg.com/vi/…/hqdefault.jpg&#10;94490510688792576  ← a bare Discord ID resolves avatar + banner"></textarea>
+      <div class="rowbar">
+        <button id="run" class="primary">Get full quality</button>
+        <button id="clear" class="ghost">Clear</button>
+        <span class="hint">Nothing is uploaded &mdash; 100% client-side.</span>
+      </div>
+    </div>
+
+    <div class="examples">
+      <span>Try:</span>
+      <button class="chip" data-u="94490510688792576">Discord ID → avatar &amp; banner</button>
+      <button class="chip" data-u="https://www.curseforge.com/minecraft/mc-mods/sodium">CurseForge → logo</button>
+      <button class="chip" data-u="https://modrinth.com/mod/sodium">Modrinth → icon</button>
+      <button class="chip" data-u="https://store.steampowered.com/app/730/">Steam → header</button>
+      <button class="chip" data-u="https://www.youtube.com/watch?v=dQw4w9WgXcQ">YouTube → thumbnail</button>
+      <button class="chip" data-u="https://github.com/octocat">GitHub → avatar</button>
+      <button class="chip" data-u="https://apps.apple.com/us/app/whatsapp-messenger/id310633997">App Store → icon</button>
+    </div>
+
+    <p id="status" class="status" hidden></p>
+  </section>
+
+  <section id="grid" class="grid"></section>
+  <p id="emptyMsg" class="emptymsg">Results appear here &mdash; paste a link above to begin.</p>
+
+  <section id="supported" class="sec">
+    <h2>Supported sources</h2>
+    <div class="sup-grid">
+      <div class="sup" style="--c:#5865F2"><b>Discord</b><span>paste a bare user ID &rarr; avatar &amp; banner, or any CDN link (icons, emojis, attachments)</span></div>
+      <div class="sup" style="--c:#f16436"><b>CurseForge</b><span>paste a project page link &rarr; full-res logo, or any CDN thumbnail link</span></div>
+      <div class="sup" style="--c:#00af54"><b>Modrinth</b><span>paste a project page link &rarr; full-res icon, or any CDN thumbnail link</span></div>
+      <div class="sup" style="--c:#ff0033"><b>YouTube</b><span>paste a watch/embed/shorts URL &rarr; thumbnail up to maxres (1280px)</span></div>
+      <div class="sup" style="--c:#e7e9ea"><b>X / Twitter</b><span>profile pics &amp; media at <code>name=orig</code></span></div>
+      <div class="sup" style="--c:#9aa4b2"><b>GitHub</b><span>paste a profile link &rarr; avatar at 460px, or any avatar CDN link</span></div>
+      <div class="sup" style="--c:#ff4500"><b>Reddit</b><span><code>preview</code> &rarr; <code>i.redd.it</code> original</span></div>
+      <div class="sup" style="--c:#66c0f4"><b>Steam</b><span>paste a store page link &rarr; header art, or profile avatars &rarr; full size</span></div>
+      <div class="sup" style="--c:#1bb76e"><b>Imgur</b><span>size-suffixed thumbs &rarr; original</span></div>
+      <div class="sup" style="--c:#34a853"><b>Google avatars</b><span><code>=s0</code> original resolution</span></div>
+      <div class="sup" style="--c:#2f7fe0"><b>Gravatar</b><span>up to 2048px</span></div>
+      <div class="sup" style="--c:#a8b3c5"><b>Wikimedia</b><span>thumb path &rarr; original file</span></div>
+      <div class="sup" style="--c:#6364ff"><b>Mastodon</b><span><code>/small/</code> &rarr; <code>/original/</code></span></div>
+      <div class="sup" style="--c:#e60023"><b>Pinterest</b><span>&rarr; <code>/originals/</code></span></div>
+      <div class="sup" style="--c:#7c8ba1"><b>Tumblr</b><span>&rarr; <code>_1280</code> variant</span></div>
+      <div class="sup" style="--c:#9146ff"><b>Twitch</b><span>profile images at 300px</span></div>
+      <div class="sup" style="--c:#1db954"><b>Spotify</b><span>cover-art size-hash swap</span></div>
+      <div class="sup" style="--c:#a2aaad"><b>App Store</b><span>paste an App Store link &rarr; app icon at 1024px</span></div>
+      <div class="sup" style="--c:#ffffff"><b>Next.js sites</b><span>unwraps <code>/_next/image</code> proxies</span></div>
+      <div class="sup" style="--c:#6b7280"><b>Anything else</b><span>generic resize-param stripper</span></div>
+    </div>
+    <p class="fineprint">Every guess is verified: both versions are loaded in your browser and compared pixel-for-pixel, so a wrong guess never replaces a good result.</p>
+  </section>
+
+  <section id="how" class="sec">
+    <h2>How it works</h2>
+    <ol class="steps">
+      <li><b>Detect</b><span>Page links for Discord, CurseForge, Modrinth, YouTube, Steam, GitHub, and App Store are resolved through free public APIs (japi.rest, cfwidget, Modrinth, Steam Store, iTunes, etc.). Other links are matched against known CDN patterns &mdash; thumbnail folders, size query parameters, proxy wrappers.</span></li>
+      <li><b>Rewrite</b><span>The URL is rewritten to that platform's maximum-quality variant (e.g. Discord <code>?size=4096</code>, CurseForge without <code>/thumbnails/&hellip;</code>).</span></li>
+      <li><b>Verify &amp; deliver</b><span>Both versions load side by side; the larger one wins. Copy it, download it, or open it full-size.</span></li>
+    </ol>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap">Runs entirely in your browser &middot; No accounts, no uploads, no tracking &middot; Images belong to their respective owners &mdash; respect creators and site terms.</div>
+</footer>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<noscript><p style="text-align:center;padding:2rem;color:#f87171">Imabber needs JavaScript to analyze links.</p></noscript>
+
+<script src="assets/core.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

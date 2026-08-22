@@ -4,6 +4,9 @@
   <a href="https://github.com/ArthurSimin/Imabber">
     <img alt="GitHub" height="56" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/available/github_vector.svg">
   </a>
+  <a href="https://arthursimin.github.io/Imabber/">
+    <img alt="generic" height="56" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/documentation/generic_vector.svg">
+  </a>
   <img alt="opencode" height="56" src="devin_opencode_badge.svg">
 </p>
 
